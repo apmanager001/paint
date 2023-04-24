@@ -1,0 +1,43 @@
+body{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+/* The top head of the page*/
+.container-header {
+    margin: 0;
+    background-color: gray;
+    height: 84px;
+}
+.mid-header{
+    padding: 15px;
+}
+
+#userbutton{
+    background-color: red;
+    font-size: large;
+    font-weight: 600;
+}
+/* the part of the page that is used, staging and shapes*/
+.container-staging{
+    width:70%;
+    padding: 30px;
+    display: inline-block;
+    
+}
+.use-staging{
+    height: 700px;
+    width: 1340px;
+    border-style: solid;
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, grey 1px, transparent 1px),
+      linear-gradient(to bottom, grey 1px, transparent 1px);
+}
+.container-shapes {
+    width: 20%;
+}
+.shapes{
+    background-color: bisque;
+    height: 700px;
+}
