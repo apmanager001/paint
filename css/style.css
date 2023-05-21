@@ -18,10 +18,14 @@ body{
     justify-content: center;
 }
 .title{
+    display: flex;
+    align-items:center;
+    justify-content: center;
     color:aqua;
     font-size: 48px;
     text-align: justify;
-    margin-right: 15px;
+    padding-right: 30px;
+  
 }
 .mid-header{
     padding: 15px;
