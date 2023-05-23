@@ -1,3 +1,4 @@
+
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
 var d = document.getElementById("staging");
@@ -39,12 +40,14 @@ myBoxes[2] = new box(25,150,20,70,"yellow");
 myBoxes[3] = new box(150, 150, 100, 50,"purple");
 myBoxes[4] = new box(25,250,100,50,"pink");
 
+
+
 //here we draw everything
 function draw() {
-    dtx.clearRect(0,0,d.width,d.height);
+    ctx.clearRect(0,0,c.width,c.height);
     //Dropable area
-    dtx.fillStyle="red";
-    dtx.fillRect(d.width/2,0,d.width,d.height);
+    dtx.fillStyle = "red";
+    dtx.fillRect(0,0,d.width,d.height);
     
     //Boxes!
     for (var i = 0; i<myBoxes.length; i++) {
@@ -120,6 +123,5 @@ function up(event) {
         }
     }
 }
-
 
 draw();

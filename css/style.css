@@ -91,7 +91,11 @@ body{
     height: 700px;
     width: 300px;
 }
-canvas {
+#staging{
+    min-height: 700px;
+    min-width: 1340px;
+}
+#canvas {
     border: 1px solid purple ;
     height: 700px;
     width: 300px;
