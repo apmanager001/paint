@@ -1,12 +1,10 @@
+https://stackoverflow.com/questions/30804305/how-can-i-make-different-shapes-of-a-canvas-draggable-and-particular-area-of-it
+
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
-var d = document.getElementById("staging");
-var dtx = d.getContext("2d");
 
-c.width = 300;
-c.height = 700;
-d.height = 700;
-d.width = 1340;
+c.width = 600;
+c.height = 300;
 
 //My mouse coordinates
 var x,y;
@@ -33,18 +31,17 @@ function box(x,y,w,h,rgb) {
 }
 
 //Let's make some boxes!!
-myBoxes[0] = new box(25, 25, 100, 50,"green");
-myBoxes[1] = new box(150,25,100,50,"blue");
-myBoxes[2] = new box(25,150,20,70,"yellow");
-myBoxes[3] = new box(150, 150, 100, 50,"purple");
-myBoxes[4] = new box(25,250,100,50,"pink");
+myBoxes[0] = new box(10,10,50,100,"green");
+myBoxes[1] = new box(80,50,100,75,"blue");
+myBoxes[2] = new box(40,150,20,70,"yellow");
+
 
 //here we draw everything
 function draw() {
-    dtx.clearRect(0,0,d.width,d.height);
+    ctx.clearRect(0,0,c.width,c.height);
     //Dropable area
-    dtx.fillStyle="red";
-    dtx.fillRect(d.width/2,0,d.width,d.height);
+    ctx.fillStyle="red";
+    ctx.fillRect(c.width/2,0,c.width,c.height);
     
     //Boxes!
     for (var i = 0; i<myBoxes.length; i++) {
@@ -53,7 +50,7 @@ function draw() {
         //NEW CODE FOR UPDATE
         if (b.draging) { //box on the move
             //Also draw it on the original spot
-            ctx.fillStyle="lightgrey"; //I chose a different color to make it appear more as a shadow of the box that's being moved.
+            ctx.fillStyle="grey"; //I chose a different color to make it appear more as a shadow of the box that's being moved.
             ctx.fillRect(b.xS,b.yS,b.w,b.h);
             ctx.strokeRect(b.xS,b.yS,b.w,b.h);
         }
