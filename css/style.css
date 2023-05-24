@@ -60,43 +60,181 @@ body{
     text-align: center;
     margin-right: 15px;
 }
-
-#userbutton{
+/*Modal*/
+#openModal{
     
     background-color: #E1AD01;
     border-radius: 15px;
     font-size: large;
     font-weight: 600;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 45px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 25px;
+  }
+  
+  .close {
+    color: black;
+    float: right;
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  #username{
+    font-size: 36px;
+    width: 100%;
+  }
+  #usernameForm label{
+    font-size: 36px;
+    margin-top: 30px;
+  }
+  #usernameForm button{
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 24px;
+    
+  }
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
 /* the part of the page that is used, staging and shapes*/
 .container-staging{
-    padding: 30px;
+    padding: 30px 0 0 30px;
     display: flex;
 }
 .use-staging{
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.4);
     min-height: 700px;
-    min-width: 1340px;
-    border-style: solid;
+    min-width: 1200px;
+    
     background-size: 40px 40px;
     background-image:
       linear-gradient(to right, grey 1px, transparent 1px),
       linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 .container-shapes {
-    padding-left: 60px;
+    padding-left: 0px;
 }
 .shapes{
-    background-color: bisque;
+    background-color: tran;
+    overflow-x: hidden;
+    overflow-y: auto;
     height: 700px;
-    width: 300px;
+    min-width: 400px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
 }
 #staging{
     min-height: 700px;
-    min-width: 1340px;
+    min-width: 1300px;
 }
 #canvas {
-    border: 1px solid purple ;
+    border: 0px ;
     height: 700px;
-    width: 300px;
+    width: 470px;
     }
+
+.allShapes{
+  margin: 30px 30px 30px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/*all the IDs for shapes*/
+#square {
+  width: 100px;
+  height: 100px;
+  background: red;
+}
+#rectangle {
+  width: 200px;
+  height: 100px;
+  background: red;
+}
+#circle {
+  width: 100px;
+  height: 100px;
+  background: red;
+  border-radius: 50%
+}
+#oval {
+  width: 200px;
+  height: 100px;
+  background: red;
+  border-radius: 100px / 50px;
+}
+#triangleUp {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid red;
+}
+#triangleDown {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 100px solid red;
+}
+#triangleLeft {
+  width: 0;
+  height: 0;
+  border-top: 50px solid transparent;
+  border-right: 100px solid red;
+  border-bottom: 50px solid transparent;
+}
+#triangleRight {
+  width: 0;
+  height: 0;
+  border-top: 50px solid transparent;
+  border-left: 100px solid red;
+  border-bottom: 50px solid transparent;
+}
+#parallelogram {
+  width: 150px;
+  height: 100px;
+  transform: skew(20deg);
+  background: red;
+}
+#diamond {
+  width: 0;
+  height: 0;
+  border: 50px solid transparent;
+  border-bottom-color: red;
+  position: relative;
+  top: -50px;
+}
+#diamond:after {
+  content: '';
+  position: absolute;
+  left: -50px;
+  top: 50px;
+  width: 0;
+  height: 0;
+  border: 50px solid transparent;
+  border-top-color: red;
+}
