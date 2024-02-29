@@ -1,0 +1,100 @@
+
+.header{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+  .name{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+      color: Black;
+      font-weight: 500;
+      text-align: center;
+      font-size: 42px;
+  }
+  .moves{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    min-height:55px;
+    min-width: 350px;
+      color: Black;
+      font-weight: 500;
+      text-align: center;
+      font-size: 42px;
+  }
+  
+  .clock {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+      min-height:55px;
+      min-width: 160px;
+      
+      color: Black;
+      font-weight: 500;
+      font-size: 42px;
+      text-align: center;
+      
+  }
+  .controlContainer {
+    display: flex;
+    justify-content: center;
+  }
+  .controlBtn {
+    font-size: 24px;
+    font-weight: 700;
+    padding: 8px;
+    background-color: #FFE135;
+    border-radius: 15px;
+  }
+  
+  .modal {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 60px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    padding-bottom: 40px;
+  }
+  
+  
+  #modalInput{
+    font-size: 36px;
+    margin: 50px 0 0 0;
+    padding: 8px 0 0 12px;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+  }
+  #modalBtn {
+    font-size: 36px;
+    background-color: #50C878;
+    margin: 50px 0 0 0;
+    padding: 8px;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+  .inputButton {
+    display: flex;
+    flex-direction: row;
+  }
