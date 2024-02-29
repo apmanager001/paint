@@ -20,7 +20,7 @@ app.disable("x-powered-by");
 
 
 // API Routes
-//app.use('/', require('./router/routes'))
+app.use('/', require('./routes/routes'))
 
 const port = process.env.PORT;
 

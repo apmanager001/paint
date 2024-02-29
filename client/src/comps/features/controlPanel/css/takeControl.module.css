@@ -1,48 +1,7 @@
-
-.header{
-    display: flex;
-    align-items:center;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  
-  .name{
-    display: flex;
-    align-items:center;
-    justify-content: center;
-      color: Black;
-      font-weight: 500;
-      text-align: center;
-      font-size: 42px;
-  }
-  .moves{
-    display: flex;
-    align-items:center;
-    justify-content: center;
-    min-height:55px;
-    min-width: 350px;
-      color: Black;
-      font-weight: 500;
-      text-align: center;
-      font-size: 42px;
-  }
-  
-  .clock {
-    display: flex;
-    align-items:center;
-    justify-content: center;
-      min-height:55px;
-      min-width: 160px;
-      
-      color: Black;
-      font-weight: 500;
-      font-size: 42px;
-      text-align: center;
-      
-  }
   .controlContainer {
     display: flex;
     justify-content: center;
+    padding-bottom: 50px;
   }
   .controlBtn {
     font-size: 24px;
@@ -50,6 +9,8 @@
     padding: 8px;
     background-color: #FFE135;
     border-radius: 15px;
+    border: 0;
+    cursor: pointer;
   }
   
   .modal {
@@ -78,13 +39,14 @@
     padding-bottom: 40px;
   }
   
-  
   #modalInput{
     font-size: 36px;
     margin: 50px 0 0 0;
     padding: 8px 0 0 12px;
     border-bottom-left-radius: 15px;
     border-top-left-radius: 15px;
+    border: 0;
+    outline: none;
   }
   #modalBtn {
     font-size: 36px;
@@ -93,8 +55,11 @@
     padding: 8px;
     border-bottom-right-radius: 15px;
     border-top-right-radius: 15px;
+    cursor: pointer;
+    border: 0;
   }
   .inputButton {
     display: flex;
     flex-direction: row;
+    border: 0;
   }

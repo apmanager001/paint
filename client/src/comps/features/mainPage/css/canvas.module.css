@@ -92,6 +92,8 @@
   padding: 8px;
   background-color: #FFE135;
   border-radius: 15px;
+  border: 0;
+  cursor: pointer;
 }
 
 .modal {
@@ -127,6 +129,8 @@
   padding: 8px 0 0 12px;
   border-bottom-left-radius: 15px;
   border-top-left-radius: 15px;
+  border: 0;
+  outline: none;
 }
 #modalBtn {
   font-size: 36px;
@@ -135,6 +139,7 @@
   padding: 8px;
   border-bottom-right-radius: 15px;
   border-top-right-radius: 15px;
+  border: 0;
 }
 .inputButton {
   display: flex;

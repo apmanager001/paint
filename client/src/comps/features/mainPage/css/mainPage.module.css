@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+}
+
+.left {
+  flex: 1;
+  width: 10%;
+}
+
+.middle {
+  flex: 8; /* Takes up 80% of the space */
+}
+
+.right {
+  flex: 1;
+  width: 10%;
+}
+
+@media (max-width: 1350px) {
+  .left {
+    display: none;
+  }
+}
+

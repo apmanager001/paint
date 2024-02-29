@@ -1,8 +1,16 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import styles from './css/controlPanel.module.css'
 
 
+const ControlPanel = ({moves, onTimerZero}) => {
+  const [time, setTime] = useState({
+    minutes: 5,
+    seconds: 0
+  });
+  const [timerReachedZero, setTimerReachedZero] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
-const ControlPanel = () => {
+  
 
     useEffect(() => {
         const countDownDate = new Date().getTime() + time.minutes * 60 * 1000 + time.seconds * 1000;
@@ -18,6 +26,7 @@ const ControlPanel = () => {
             if (distance < 0) {
               clearInterval(countdownClock);
               setTimerReachedZero(true);
+              onTimerZero();
               return { minutes: 0, seconds: 0 };
             }
     
@@ -25,12 +34,8 @@ const ControlPanel = () => {
           });
         }, 1000);
     
-        return () => clearInterval(countdownClock); // Cleanup on component unmount
-      }, []);
-
-
-
-
+        return () => clearInterval(countdownClock);
+      }, [onTimerZero]);
 
   return (
 
@@ -43,24 +48,7 @@ const ControlPanel = () => {
         <div className={styles.clock} id={styles.timer}>
   {`${time.minutes}:${time.seconds < 10 ? '0' : ''}${time.seconds}`}
         </div>
-    <div className={styles.controlContainer}>
-      <button className={styles.controlBtn} onClick={openModal}>
-          Take Control
-        </button>
-        {modalVisible && (
-            <div id="ruleModal" className={styles.modal}>
-            <div className={styles.modalContent}>
-                <span className={styles.close} onClick={closeModal}>&times;</span>
-                 
-                 <div className={styles.inputButton}> 
-                  <input id={styles.modalInput} placeholder='Your Nickname'></input>
-                  
-                  <button type="submit" value="Submit" id={styles.modalBtn}>Submit</button></div>
-                
-            </div>
-            </div>
-          )}
-      </div>
+    
       </div>
 
 
