@@ -1,20 +1,28 @@
 const ActiveUser = require("../models/activeUser.js");
 
-const addUser = async (req, res) => {
+const postAddUser = async (req, res) => {
     try {
-        const { username } = req.body
+      const { username, canvasId } = req.body;
 
-        const user = await User.create({
-            username
-        })
-        return res.json(user)
-    } catch(error){
-        console.log(error);
+      if (!username || !canvasId) {
+        return res
+          .status(400)
+          .json({ error: "Username and canvasId are required." });
+      }
+
+      const user = await ActiveUser.create({
+        username,
+        canvasId,
+      });
+      return res.json(user);
+    } catch (error) {
+      console.error("Error adding user:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
     }
     
 
 }
 
 module.exports = {
-    addUser
+    postAddUser
 }

@@ -2,12 +2,14 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import TakeControl from "../controlPanel/takeControl";
 import ControlPanel from "../controlPanel/controlPanel";
 import styles from "./css/canvas.module.css";
-import axios from 'axios'
+import axios from "axios";
 function Canvas() {
   const [clickedSquares, setClickedSquares] = useState(new Set());
   const [moves, setMoves] = useState(20);
   const [grid, setGrid] = useState([]);
   const [user, setUser] = useState(false);
+  const [canvasId, setCanvasId] = useState(" ");
+  const [refreshCount, setRefreshCount] = useState(0);
   const [timerReachedZero, setTimerReachedZero] = useState(false);
   // Set grid number of Rows and Columns
   const totalRows = 85;
@@ -95,34 +97,41 @@ function Canvas() {
     });
   };
 
-  //prop passed from controlpanel to disable 
+  //prop passed from controlpanel to disable
   const handleTimerZero = () => {
     //setTimerReachedZero(true);
     disableColorChanges();
   };
 
-  useEffect(() => {
-    // Fetch auction information when component mounts
-    axios
-      .get(`/activeUser`)
-      .then((response) => {
-        // Update state with fetched auction information
-        
+  useEffect(  () => {
+    const fetchEntry = async () => {
+    try { 
+      const response = await axios.get('/activeUser');
         setUser(response.data);
-      })
-      .catch((error) => {
+    } catch(error) {
         // Handle error
-        console.error("Error fetching auction info:", error);
-      });
+        console.error("Error checking users:", error);
+      };
+    }
+    fetchEntry()
   }, []);
 
+//refresh controlpanel when user starts control
+  const handleRefresh = () => {
+    // Increment the refresh count to trigger a re-render of TakeControl
+    setRefreshCount(refreshCount + 1);
+  };
+
+  console.log(clickedSquares)
   return (
     <div className={styles.container}>
-      {!user ?<TakeControl /> : <ControlPanel moves={moves} onTimerZero={handleTimerZero} />}
-      
-      
+      {user.length === 0 ? (
+        <TakeControl canvasId={canvasId} refreshCount={refreshCount} />
+      ) : (
+        <ControlPanel moves={moves} onTimerZero={handleTimerZero} />
+      )}
+
       <div className={styles.grid}>{grid}</div>
-     
     </div>
   );
 }

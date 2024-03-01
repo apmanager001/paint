@@ -1,7 +1,7 @@
   .controlContainer {
     display: flex;
     justify-content: center;
-    padding-bottom: 50px;
+    padding-bottom: 25px;
   }
   .controlBtn {
     font-size: 24px;

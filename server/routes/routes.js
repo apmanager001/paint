@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const {getUsers} = require('../controllers/mainPageControllers')
-const {addUser} = require('./controllers/addUserController')
+const {getUsers, getCurrentUsers} = require('../controllers/mainPageControllers')
+const {postAddUser} = require('../controllers/addUserController')
+const { submitTurn } = require('../controllers/submitTurn')
 const cors = require("cors");
 
 const url = process.env.SERVER_URL;
@@ -17,16 +18,13 @@ router.use(
 
 //initial main page load endpoints
 router.get('/activeUser', getUsers)
-router.get('/currentUsers', )
+router.get('/currentUsers', getCurrentUsers)
 
 //adding user to activeuser table
-router.post('/addUser', addUser)
+router.post('/startTurn', postAddUser)
 
-
-
-
-
-
+//submitting a turn
+router.post('/submitTurn', submitTurn)
 
 
 
