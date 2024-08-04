@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import styles from './css/controlPanel.module.css'
 
 
-const ControlPanel = ({moves, onTimerZero}) => {
+const ControlPanel = ({moves, onTimerZero, username}) => {
   const [time, setTime] = useState({
     minutes: 5,
     seconds: 0
@@ -41,7 +41,7 @@ const ControlPanel = ({moves, onTimerZero}) => {
 
 
     <div className={styles.header}>
-        <div className={styles.name}>Name</div>
+        <div className={styles.name}>{username}</div>
 
         <div className={styles.moves} id={styles.counter}>Moves Left: {moves} </div>
 

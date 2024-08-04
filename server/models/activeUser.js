@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const Canvas = require("./canvas.js");
 
 const activeUser = new Schema({
   canvasId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "Canvas",
   },
   username: {
     type: String,

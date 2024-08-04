@@ -11,6 +11,12 @@
   padding: 0;
   border: 0;
 
+  --red: #ff0000;
+  --green: #00FF00;
+  --blue: #0000ff;
+  --yellow: #ffff00;
+  --gray: #ccc;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

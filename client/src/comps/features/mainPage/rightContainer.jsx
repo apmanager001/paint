@@ -2,23 +2,30 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./css/right.module.css";
 
-const Users = () => {
-  const [backendData, setBackendData] = useState([{}]);
+const Users = ({ canvasId }) => {
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios("/currentUsers")
-      .then((response) => response.json())
-      .then((data) => {
-        setBackendData(data.users);
-      });
-  }, []);
-
+    
+    if (canvasId) {
+      axios
+        .get(`/currentUsers/${canvasId}`)
+        .then((response) => {
+          setUsers(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching users:", error);
+        });
+    }
+  }, [canvasId]);
   return (
     <div className={styles.container}>
-      {typeof backendData.users === "undefined" ? (
-        <p> Loading...</p>
+      {users.length === 0 ? (
+        <p>No Users Yet</p>
       ) : (
-        backendData.users.map((user, i) => <p key={i}>{user}</p>)
+        users.map((user, i) => (
+        <p key={user._id}>{user.username}</p>
+      ))
       )}
     </div>
   );

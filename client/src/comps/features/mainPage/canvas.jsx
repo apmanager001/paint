@@ -1,75 +1,125 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import {toast} from 'react-hot-toast'
 import TakeControl from "../controlPanel/takeControl";
 import ControlPanel from "../controlPanel/controlPanel";
 import styles from "./css/canvas.module.css";
 import axios from "axios";
-function Canvas() {
-  const [clickedSquares, setClickedSquares] = useState(new Set());
+import ExistingCanvas from "./existingCanvas";
+
+function Canvas({ originalCanvasId }) {
+  const [clickedSquares, setClickedSquares] = useState([]);
   const [moves, setMoves] = useState(20);
   const [grid, setGrid] = useState([]);
   const [user, setUser] = useState(false);
-  const [canvasId, setCanvasId] = useState(" ");
-  const [refreshCount, setRefreshCount] = useState(0);
+  const [username, setUsername] = useState('')
+  const [gridChangeable, setGridChangeable] = useState(false)
+  const [blankCanvas, setBlankCanvas] = useState(false);
   const [timerReachedZero, setTimerReachedZero] = useState(false);
-  // Set grid number of Rows and Columns
+  const [errorMessage,  setErrorMessage] = useState('');
+
   const totalRows = 85;
   const totalColumns = 65;
 
+  const colorMapping = {
+    0: "blue",
+    1: "green",
+    2: "yellow",
+    3: "gray",
+    4: "red",
+  };
+
+  const colorClasses = {
+    blue: styles.color1,
+    green: styles.color2,
+    yellow: styles.color3,
+    gray: styles.color4,
+    red: styles.color5,
+  };
+
   useLayoutEffect(() => {
     createGrid();
-  }, []); // Empty dependency array ensures it runs once on mount
+  }, [gridChangeable]);
 
   useEffect(() => {
-    if (timerReachedZero) {
+    if (timerReachedZero || moves === 0) {
       disableColorChanges();
+
+      const dataToSend = {
+      canvasId: originalCanvasId,
+      squares: clickedSquares,
+      users: username
+    };
+      
+      axios
+        .post("/submitTurn", dataToSend)
+        .then((response) => {
+          toast.success("Thank you for Being part of the community");
+          window.location.href = "/";
+        })
+        .catch((error) => {
+          console.error("Error submitting data:", error);
+          setErrorMessage("An error occurred while submitting data");
+        });
+
+        axios
+          .delete("/deleteActive", {
+            data: { canvasId: dataToSend.canvasId, users: dataToSend.users || 'apmanager' },
+          })
+          .then((response) => {
+            console.log("Active user deleted successfully:", response.data);
+          })
+          .catch((error) => {
+            console.error("Error deleting active user:", error);
+          });
     }
-  }, [timerReachedZero]);
+  }, [timerReachedZero, moves]);
 
-  function changeColor(event) {
-    const square = event.target;
-    const squareId = square.id;
+  const changeColor = (event) => {
+    if (gridChangeable) {
+      const square = event.target;
+      const squareId = square.id;
+      const currentColorIndex = parseInt(square.dataset.colorIndex) || 0;
+      const nextColorIndex =
+        (currentColorIndex + 1) % Object.keys(colorMapping).length;
+      const nextColor = colorMapping[nextColorIndex];
 
-    // Check if the square has already been clicked
-    if (!clickedSquares.has(squareId)) {
-      setClickedSquares(
-        (prevClickedSquares) => new Set([...prevClickedSquares, squareId])
-      ); // Update clickedSquares with the new square's ID
+      setClickedSquares((prevClickedSquares) => {
+        const existingSquareIndex = prevClickedSquares.findIndex(
+          (sq) => sq.squareId === squareId
+        );
 
-      const colors = [
-        styles.color1,
-        styles.color2,
-        styles.color3,
-        styles.color4,
-        styles.color5,
-      ];
-      const currentColorIndex = square.dataset.colorIndex || 0;
-      const nextColorIndex = (parseInt(currentColorIndex) + 1) % colors.length;
+        if (existingSquareIndex === -1) {
+          return [...prevClickedSquares, { squareId, color: nextColor }];
+        } else {
+          const updatedSquares = [...prevClickedSquares];
+          updatedSquares[existingSquareIndex].color = nextColor;
+          return updatedSquares;
+        }
+      });
 
-      square.className = styles.square + " " + colors[nextColorIndex];
+      square.className = styles.square + " " + colorClasses[nextColor];
       square.dataset.colorIndex = nextColorIndex;
 
-      // Increment moves by 1
+      if (moves <= 0) {
+        disableColorChanges();
+      }
+    } else {
+      return;
     }
 
-    if (moves <= 0) {
-      // Perform necessary actions when moves reaches 0
-      disableColorChanges();
-    }
-  }
-
-  // Call this function separately if needed
+  };
 
   useEffect(() => {
-    setMoves(20 - clickedSquares.size);
+    setMoves(20 - clickedSquares.length);
   }, [clickedSquares]);
 
   useEffect(() => {
-    if (clickedSquares.size === 20) {
+    if (clickedSquares.length === 20) {
       disableColorChanges();
     }
-  }, [clickedSquares.size]);
+  }, [clickedSquares.length]);
 
-  function createGrid() {
+  const createGrid = () => {
     const squares = [];
     for (let i = 0; i < totalRows * totalColumns; i++) {
       squares.push(
@@ -82,14 +132,13 @@ function Canvas() {
       );
     }
     setGrid(squares);
-  }
+
+};
 
   const disableColorChanges = () => {
-    // Logic to disable color changes, e.g., remove event listeners
     setGrid((prevGrid) => {
       return prevGrid.map((square) => {
-        if (!clickedSquares.has(square)) {
-          // Disable color changes by removing the onClick handler
+        if (!clickedSquares.some((sq) => sq.squareId === square.key)) {
           return React.cloneElement(square, { onClick: null });
         }
         return square;
@@ -97,41 +146,59 @@ function Canvas() {
     });
   };
 
-  //prop passed from controlpanel to disable
   const handleTimerZero = () => {
-    //setTimerReachedZero(true);
-    disableColorChanges();
+    setTimerReachedZero(true);
+
   };
 
-  useEffect(  () => {
+  useEffect(() => {
     const fetchEntry = async () => {
-    try { 
-      const response = await axios.get('/activeUser');
-        setUser(response.data);
-    } catch(error) {
-        // Handle error
+      try {
+        if (originalCanvasId) {
+          setBlankCanvas(false);
+        }
+      } catch (error) {
         console.error("Error checking users:", error);
-      };
-    }
-    fetchEntry()
-  }, []);
+      }
+    };
+    fetchEntry();
+  }, [originalCanvasId]);
 
-//refresh controlpanel when user starts control
-  const handleRefresh = () => {
-    // Increment the refresh count to trigger a re-render of TakeControl
-    setRefreshCount(refreshCount + 1);
-  };
 
-  console.log(clickedSquares)
+  const handleStartTurn = (username) => {
+    setUser(true)
+    setGridChangeable(true)
+    setUsername(username);
+  }
   return (
     <div className={styles.container}>
-      {user.length === 0 ? (
-        <TakeControl canvasId={canvasId} refreshCount={refreshCount} />
+      {blankCanvas ? (
+        <>
+          {user ? (
+            <ControlPanel
+              moves={moves}
+              onTimerZero={handleTimerZero}
+              username={username}
+            />
+          ) : (
+            <TakeControl
+              canvasId={originalCanvasId}
+              onStartTurn={handleStartTurn}
+            />
+          )}
+          <div className={styles.grid}>{grid}</div>
+        </>
       ) : (
-        <ControlPanel moves={moves} onTimerZero={handleTimerZero} />
+        <>
+          <ExistingCanvas
+            canvasId={originalCanvasId}
+            previousMoves={clickedSquares}
+            colorMapping={colorMapping}
+            colorClasses={colorClasses}
+            changeColor={changeColor}
+          />
+        </>
       )}
-
-      <div className={styles.grid}>{grid}</div>
     </div>
   );
 }

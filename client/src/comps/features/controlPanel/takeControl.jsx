@@ -3,7 +3,7 @@ import styles from './css/takeControl.module.css'
 import { toast } from "react-hot-toast";
 import axios from 'axios';
 
-const TakeControl = ({canvasId, refreshCount}) => {
+const TakeControl = ({canvasId, refreshCount, onStartTurn}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [username, setUsername] = useState("");
     const openModal = () => {
@@ -16,14 +16,14 @@ const TakeControl = ({canvasId, refreshCount}) => {
 
     const checkIfActive = async () => {
        try { 
-      const response = await axios.get('/activeUser');
-        if(response.data.length === 0){
-          return true
+      const response = await axios.get('/checkActiveUser');
+      
+        if (Array.isArray(response.data) && response.data.length === 0) {
+          return true;
         } else {
-          return false
+          return false;
         }
     } catch(error) {
-        // Handle error
         console.error("Error checking users:", error);
       };
     }
@@ -35,8 +35,9 @@ const TakeControl = ({canvasId, refreshCount}) => {
 
         if (isActive === true) {
           // If active, proceed with the API call
+          console.log(canvasId)
           await axios.post(`/startTurn`, { username, canvasId });
-          // Handle successful response if needed
+          onStartTurn(username);
           closeModal();
         } else {
           // If not active, show a toast error

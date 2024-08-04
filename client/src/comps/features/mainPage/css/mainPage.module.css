@@ -4,16 +4,15 @@
 
 .left {
   flex: 1;
-  width: 10%;
 }
 
 .middle {
-  flex: 8; /* Takes up 80% of the space */
+  flex: 8; 
 }
 
 .right {
   flex: 1;
-  width: 10%;
+  padding-top: 50px;
 }
 
 @media (max-width: 1350px) {

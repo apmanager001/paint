@@ -28,13 +28,13 @@ function Header() {
             <div className={styles.faqModalContent}>
               <span className={styles.close} onClick={closeFaqModal}>&times;</span>
                 
-                <p><h2>F.A.Q.</h2>
+                <h2>F.A.Q.</h2>
                 <ol>
                   <li>How do I play?</li>
                     <p>Start by clicking the control button and see if anyone else has control</p>
                   <li>What do I set my name as?</li>
                     <p>Any name you would like. Best to make it a nickname though, everyone can see it.</p>
-                </ol></p>
+                </ol>
             </div>
           </div>
         )}
@@ -49,7 +49,7 @@ function Header() {
             <div className={styles.modalContent}>
               <span className={styles.close} onClick={closeModal}>&times;</span>
                 
-                <p><h2>Rules</h2>
+                <h2>Rules</h2>
                 <ol>
                   <li>Only one user can go at a time.</li>
                   <li>Click the "control" button to participate.</li>
@@ -57,7 +57,7 @@ function Header() {
                   <li>Once you see your name, you have 5 minutes to make your 20 moves</li>
                   <li>If the Clock runs out your moves are automatically submitted.</li>
                   <li>Have Fun!</li>
-                </ol></p>
+                </ol>
             </div>
           </div>
         )}

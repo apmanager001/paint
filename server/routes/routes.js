@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {getUsers, getCurrentUsers} = require('../controllers/mainPageControllers')
-const {postAddUser} = require('../controllers/addUserController')
-const { submitTurn } = require('../controllers/submitTurn')
+const {
+  getCanvas,
+  getCurrentUsers,
+} = require("../controllers/mainPageControllers");
+const {postAddUser, deleteActive} = require('../controllers/addUserController')
+const { submitTurn, checkActiveUser } = require('../controllers/submitTurn')
 const cors = require("cors");
 
 const url = process.env.SERVER_URL;
@@ -16,16 +19,17 @@ router.use(
 );
 
 
-//initial main page load endpoints
-router.get('/activeUser', getUsers)
-router.get('/currentUsers', getCurrentUsers)
-
 //adding user to activeuser table
-router.post('/startTurn', postAddUser)
+router.post('/startTurn', submitTurn)
+router.get('/checkActiveUser', checkActiveUser)
 
 //submitting a turn
-router.post('/submitTurn', submitTurn)
+router.post('/submitTurn', postAddUser)
+router.delete('/deleteActive', deleteActive);
 
-
+//Getting the last canvas id
+router.get('/getCanvas', getCanvas)
+router.get('/currentUsers/:id', getCurrentUsers)
+router.get('/checkNeedNewGrid')
 
 module.exports = router;
