@@ -11,7 +11,6 @@ const createGrid = (
   combinedMoves,
   colorMapping,
   colorClasses,
-  changeColor,
   styles
 ) => {
   const squares = [];
@@ -42,45 +41,6 @@ const combineMoves = (oldMoves, previousMoves) => {
   return combinedMoves;
 };
 
-const handleChangeColor = (
-  event,
-  colorMapping,
-  colorClasses,
-  styles,
-  setClickedSquares,
-  setMoves,
-  moves,
-  disableColorChanges
-) => {
-  const square = event.target;
-  const squareId = square.id;
-  const currentColorIndex = parseInt(square.dataset.colorIndex) || 0;
-  const nextColorIndex =
-    (currentColorIndex + 1) % Object.keys(colorMapping).length;
-  const nextColor = colorMapping[nextColorIndex];
-
-  setClickedSquares((prevClickedSquares) => {
-    const existingSquareIndex = prevClickedSquares.findIndex(
-      (sq) => sq.squareId === squareId
-    );
-
-    if (existingSquareIndex === -1) {
-      return [...prevClickedSquares, { squareId, color: nextColor }];
-    } else {
-      const updatedSquares = [...prevClickedSquares];
-      updatedSquares[existingSquareIndex].color = nextColor;
-      return updatedSquares;
-    }
-  });
-
-  square.className = `${styles.square} ${colorClasses[nextColor]}`;
-  square.dataset.colorIndex = nextColorIndex;
-
-  if (moves <= 0) {
-    disableColorChanges();
-  }
-};
-
 const disableColorChanges = (setGrid, clickedSquares) => {
   setGrid((prevGrid) => {
     return prevGrid.map((square) => {
@@ -108,6 +68,49 @@ function ExistingCanvas({
   const [timerReachedZero, setTimerReachedZero] = useState(false);
   const totalRows = 85;
   const totalColumns = 65;
+
+  const handleChangeColor = (event) => {
+    console.log("Change color called");
+    if (!gridChangeable) {
+      console.log("Grid is not changeable.");
+      return;
+    }
+
+    const square = event.target;
+    const squareId = square.id;
+    const currentColorIndex = parseInt(square.dataset.colorIndex) || 0;
+    const nextColorIndex =
+      (currentColorIndex + 1) % Object.keys(colorMapping).length;
+    const nextColor = colorMapping[nextColorIndex];
+
+    setClickedSquares((prevClickedSquares) => {
+      const existingSquareIndex = prevClickedSquares.findIndex(
+        (sq) => sq.squareId === squareId
+      );
+
+      if (existingSquareIndex === -1) {
+        return [...prevClickedSquares, { squareId, color: nextColor }];
+      } else {
+        const updatedSquares = [...prevClickedSquares];
+        updatedSquares[existingSquareIndex].color = nextColor;
+        return updatedSquares;
+      }
+    });
+
+    square.className = `${styles.square} ${colorClasses[nextColor]}`;
+    square.dataset.colorIndex = nextColorIndex;
+
+    setMoves((prevMoves) => prevMoves - 1);
+    if (moves <= 0) {
+      disableColorChanges(setGrid, clickedSquares);
+    }
+  };
+console.log(moves)
+  useEffect(() => {
+    if (moves <= 0) {
+      disableColorChanges(setGrid, clickedSquares);
+    }
+  }, [moves])
 
   useEffect(() => {
     const fetchCurrentUsers = async () => {
@@ -144,7 +147,6 @@ function ExistingCanvas({
         combinedMoves,
         colorMapping,
         colorClasses,
-        null,
         styles
       )
     );
@@ -192,37 +194,18 @@ function ExistingCanvas({
 
   useEffect(() => {
     if (gridChangeable) {
-      const handleColorChange = (event) => {
-        console.log("Change color called");
-        if (!gridChangeable) {
-          console.log("Grid is not changeable.");
-          return;
-        }
-
-        handleChangeColor(
-          event,
-          colorMapping,
-          colorClasses,
-          styles,
-          setClickedSquares,
-          setMoves,
-          moves,
-          disableColorChanges
-        );
-      };
-
       const squares = document.querySelectorAll(`.${styles.square}`);
       squares.forEach((square) => {
-        square.addEventListener("click", handleColorChange);
+        square.addEventListener("click", handleChangeColor);
       });
 
       return () => {
         squares.forEach((square) => {
-          square.removeEventListener("click", handleColorChange);
+          square.removeEventListener("click", handleChangeColor);
         });
       };
     }
-  }, [gridChangeable]);
+  }, [gridChangeable, moves]);
 
   useEffect(() => {
     setMoves(20 - clickedSquares.length);
@@ -266,7 +249,6 @@ function ExistingCanvas({
         combinedMoves,
         colorMapping,
         colorClasses,
-        null,
         styles
       )
     );
