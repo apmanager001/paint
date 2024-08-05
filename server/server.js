@@ -1,5 +1,5 @@
 const express = require('express');
-// const dotenv = require("dotenv").config();
+const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const {mongoose} = require('mongoose')
 

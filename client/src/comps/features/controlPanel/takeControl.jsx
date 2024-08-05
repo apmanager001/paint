@@ -35,7 +35,6 @@ const TakeControl = ({canvasId, refreshCount, onStartTurn}) => {
 
         if (isActive === true) {
           // If active, proceed with the API call
-          console.log(canvasId)
           await axios.post(`/startTurn`, { username, canvasId });
           onStartTurn(username);
           closeModal();

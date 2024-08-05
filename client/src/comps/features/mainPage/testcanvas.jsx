@@ -33,22 +33,21 @@ const createGrid = (
   return squares;
 };
 
-const combineMoves = (oldMoves, currentMoves) => {
+const combineMoves = (oldMoves, previousMoves) => {
   const combinedMoves = { ...oldMoves };
-  currentMoves.forEach((move) => {
+  previousMoves.forEach((move) => {
     combinedMoves[move.squareId] = move.color;
   });
   return combinedMoves;
 };
 
 const ExistingCanvas = ({
-  currentMoves,
+  previousMoves,
   colorMapping,
   colorClasses,
   canvasId,
 }) => {
   const [oldMoves, setOldMoves] = useState({});
-  // const [currentMoves, setCurrentMoves] = useState(0)
   const [grid, setGrid] = useState([]);
   const [clickedSquares, setClickedSquares] = useState([]);
   const [moves, setMoves] = useState(20);
@@ -153,7 +152,7 @@ const ExistingCanvas = ({
   }, [oldMoves, colorMapping, colorClasses, styles, totalRows, totalColumns]);
 
   useEffect(() => {
-    if (timerReachedZero || clickedSquares.length === 20) {
+    if (timerReachedZero || moves === 0) {
       console.log(
         "Timer reached zero or moves are zero. Disabling color changes."
       );
@@ -169,6 +168,7 @@ const ExistingCanvas = ({
         .post("/submitTurn", dataToSend)
         .then((response) => {
           toast.success("Thank you for Being part of the community");
+          window.location.href = "/";
         })
         .catch((error) => {
           console.error("Error submitting data:", error);
@@ -184,11 +184,7 @@ const ExistingCanvas = ({
         })
         .then((response) => {
           console.log("Active user deleted successfully:", response.data);
-          if (location.pathname === "/") {
-               window.location.reload();
-          }
         })
-          
         .catch((error) => {
           console.error("Error deleting active user:", error);
         });
@@ -227,9 +223,9 @@ const ExistingCanvas = ({
     }
   }, [clickedSquares.length, disableColorChanges]);
 
-const handleTimerZero = () => {
-  setTimerReachedZero(true);
-};
+  const handleTimerZero = () => {
+    setTimerReachedZero(true);
+  };
 
   const handleStartTurn = (username) => {
     console.log("Starting turn for user:", username);
@@ -256,12 +252,11 @@ const handleTimerZero = () => {
       console.log("Grid is now changeable.");
     }, 0);
   };
-useEffect(() => {
-  if(clickedSquares.length <=0){
-    setGridChangeable(false)
-  }
-}, [moves])
-
+  useEffect(() => {
+    if (moves <= 0) {
+      setGridChangeable(false);
+    }
+  }, [moves]);
   return (
     <>
       {user ? (
